@@ -1,0 +1,28 @@
+Pasos para el juego de carreras 2d:
+
+1. Frontend: next js
+
+  - Renderizar el juego -> canvas y podría probar three
+  - Capturar las entradas del usuario -> Movimiento en tiempo real
+  - Mostrar el estado del juego -> Actualización jugadores, oponentes y elementos del juego
+
+    -> Todo esto a través de comunicación con el backend
+
+  FLUJO DEL FRONT
+
+    1. Carga y renderizado de la interfaz del juego
+    2. Captura de movimiento y actualización posición
+    3. Envío datos al backend -> recoger posicion de otros jugadores y de los controlados por la IA.
+    4. vuelta al punto uno re-renderizado
+
+2. Backend: node
+
+  - Estado del juego: Todas las posiciones de los jugadores y oponentes estarán guardados en node.
+  - Interacción con la ia para obtener las decisiones de los oponentes 
+  - endpoints conexión con frontend
+
+  FLUJO DE NODE:
+
+    1. Recepción del punto 3 del front. Al recibir una petición desde el front, actualiza las posiciones de los jugadores.
+    2. Gestionar el estado del juego, manteniendo una representación en memoria de todos los jugadores.
+    3. Comunicarse con la ia para tomar decisiones de los oponentes
