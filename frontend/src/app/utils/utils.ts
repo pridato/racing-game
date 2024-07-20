@@ -2,7 +2,13 @@ import * as THREE from "three";
 import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
-
+/**
+ * funcion para crear un coche
+ * @param color 
+ * @param text 
+ * @param position 
+ * @returns 
+ */
 export function createCar(color: string, text: string, position: [number, number]) {
   const carGroup = new THREE.Group();
   
@@ -31,4 +37,34 @@ export function createCar(color: string, text: string, position: [number, number
   });
 
   return carGroup;
+}
+
+/**
+ * Función para crear la pista
+ * @returns 
+ */
+export function createTrack() {
+  const trackGeometry = new THREE.PlaneGeometry(40, 20);
+  const trackMaterial = new THREE.MeshBasicMaterial({ color: 0xd3d3d3});
+  const trackMesh = new THREE.Mesh(trackGeometry, trackMaterial);
+  trackMesh.position.z = -0.1;
+
+  // en la mitad de la pista una linea divisoria
+  const lineGeometry = new THREE.PlaneGeometry(40, 0.1);
+  const lineMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+  const lineMesh = new THREE.Mesh(lineGeometry, lineMaterial);
+  lineMesh.position.z = 0.1;
+  trackMesh.add(lineMesh);
+
+  // al final de la pista una linea de meta
+  const finishGeometry = new THREE.PlaneGeometry(3, 19);
+  const finishMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
+  const finishMesh = new THREE.Mesh(finishGeometry, finishMaterial);
+  finishMesh.position.x = 19.5;
+  finishMesh.position.z = 0.1;
+  trackMesh.add(finishMesh);
+
+  trackMesh.scale.set(1, 0.4, 1);
+
+  return trackMesh;
 }

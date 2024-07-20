@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
-import { createCar } from "../utils/utils";
+import { createCar, createTrack } from "../utils/utils";
 
 const ThreeCanvas = () => { 
   const mountRef = useRef<HTMLDivElement>(null);
@@ -26,18 +26,15 @@ const ThreeCanvas = () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     mountRef.current.appendChild(renderer.domElement);
 
-    const car1Group = new THREE.Group();
-    const car2Group = new THREE.Group();
+    // Crear pista
+    const track = createTrack();
+    scene.add(track);
 
     const car1 = createCar("#ff0000", "1", [-17, 2]);
-    const car2 = createCar("#0000ff", "2", [-17, 0]);
+    const car2 = createCar("#0000ff", "2", [-17, -2]);
 
-    car1Group.add(car1);
-    car2Group.add(car2);
-
-    // Agregar a la escena
-    scene.add(car1Group);
-    scene.add(car2Group);
+    scene.add(car1);
+    scene.add(car2);
 
     // Animación
     const animate = () => {
