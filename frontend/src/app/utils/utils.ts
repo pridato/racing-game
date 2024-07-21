@@ -72,6 +72,7 @@ export function createTrack() {
 }
 
 /**
+ * TODO Refactorizado de maxWidth al maximo del size de la ventana
  * función para manejar el evento de teclado. Movimiento del coche 1 
  * @param event 
  * @param car1Ref 
@@ -79,18 +80,22 @@ export function createTrack() {
 export const handleKeyDown = (event: KeyboardEvent, car1Ref: MutableRefObject<THREE.Group<THREE.Object3DEventMap> | null>) => {
   if (car1Ref.current === null) return;
 
+  const aspect = window.innerWidth / window.innerHeight;
+  let maxWidth = aspect * 20 - 2;
   const car1 = car1Ref.current;
-  console.log(car1.position)
 
   switch (event.key) {
     case 'ArrowLeft':
     case 'a':
-      car1.position.x -= speed;
+      if (car1.position.x > 0) {
+        car1.position.x -= speed;
+      }
       break;
     case 'ArrowRight':
     case 'd':
-      if(car1.position.x >= 34.4) return;
-      car1.position.x += speed;
+      if (car1.position.x < maxWidth) {
+        car1.position.x += speed;
+      }
       break;
   }
 }
