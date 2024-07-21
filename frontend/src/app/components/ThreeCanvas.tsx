@@ -1,12 +1,11 @@
 "use client"
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
-import { FontLoader } from 'three/addons/loaders/FontLoader.js';
-import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
-import { createCar, createTrack } from "../utils/utils";
+import { createCar, createTrack, handleKeyDown } from "../utils/utils";
 
 const ThreeCanvas = () => { 
   const mountRef = useRef<HTMLDivElement>(null);
+  const car1Ref = useRef<THREE.Group | null>(null);
 
   useEffect(() => {
     if (mountRef.current === null) return;
@@ -33,6 +32,8 @@ const ThreeCanvas = () => {
     const car1 = createCar("#ff0000", "1", [-17, 2]);
     const car2 = createCar("#0000ff", "2", [-17, -2]);
 
+    car1Ref.current = car1;
+
     scene.add(car1);
     scene.add(car2);
 
@@ -54,6 +55,9 @@ const ThreeCanvas = () => {
       renderer.setSize(window.innerWidth, window.innerHeight);
     };
     window.addEventListener('resize', handleResize);
+
+  window.addEventListener("keydown", (event) => handleKeyDown(event, car1Ref));
+
 
     const currentMountRef = mountRef.current;
 

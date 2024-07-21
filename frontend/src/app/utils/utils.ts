@@ -1,6 +1,8 @@
 import * as THREE from "three";
 import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+import { MutableRefObject } from "react";
+import { speed } from "../globals/globales";
 
 /**
  * funcion para crear un coche
@@ -67,4 +69,28 @@ export function createTrack() {
   trackMesh.scale.set(1, 0.4, 1);
 
   return trackMesh;
+}
+
+/**
+ * función para manejar el evento de teclado. Movimiento del coche 1 
+ * @param event 
+ * @param car1Ref 
+ */
+export const handleKeyDown = (event: KeyboardEvent, car1Ref: MutableRefObject<THREE.Group<THREE.Object3DEventMap> | null>) => {
+  if (car1Ref.current === null) return;
+
+  const car1 = car1Ref.current;
+  console.log(car1.position)
+
+  switch (event.key) {
+    case 'ArrowLeft':
+    case 'a':
+      car1.position.x -= speed;
+      break;
+    case 'ArrowRight':
+    case 'd':
+      if(car1.position.x >= 34.4) return;
+      car1.position.x += speed;
+      break;
+  }
 }
