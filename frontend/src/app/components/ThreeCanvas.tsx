@@ -1,22 +1,30 @@
-"use client"
-import { useEffect, useRef } from "react";
+"use client";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { createCar, createTrack, handleKeyDown } from "../utils/utils";
+import { maxWidth } from "../globals/globales";
+import confetti from 'canvas-confetti';
 
-const ThreeCanvas = () => { 
+const ThreeCanvas = () => {
   const mountRef = useRef<HTMLDivElement>(null);
   const car1Ref = useRef<THREE.Group | null>(null);
+  const [isGameOver, setIsGameOver] = useState(false);
 
   useEffect(() => {
     if (mountRef.current === null) return;
 
     // Escena
     const scene = new THREE.Scene();
-    
+
     // Cámara ortográfica
     const aspect = window.innerWidth / window.innerHeight;
     const camera = new THREE.OrthographicCamera(
-      -aspect * 10, aspect * 10, 10, -10, 1, 1000
+      -aspect * 10,
+      aspect * 10,
+      10,
+      -10,
+      1,
+      1000
     );
     camera.position.z = 10; // Colocar la cámara para ver la pista
 
@@ -43,7 +51,7 @@ const ThreeCanvas = () => {
       renderer.render(scene, camera);
     };
     animate();
-    
+
     // Manejo de redimensionamiento
     const handleResize = () => {
       const aspect = window.innerWidth / window.innerHeight;
@@ -54,22 +62,37 @@ const ThreeCanvas = () => {
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
     };
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
-  window.addEventListener("keydown", (event) => handleKeyDown(event, car1Ref));
-
+    window.addEventListener("keydown", (event) => {
+      if (car1Ref?.current?.position.x! >= maxWidth) {
+        setIsGameOver(true);
+        confetti()
+      } else {
+        handleKeyDown(event, car1Ref);
+      }
+    });
 
     const currentMountRef = mountRef.current;
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
       if (currentMountRef) {
         currentMountRef.removeChild(renderer.domElement);
       }
     };
   }, []);
 
-  return <div ref={mountRef} />;
-}
+  return (
+    <>
+      {isGameOver && (
+        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
+          <h1 className="text-3xl text-white">Game Over</h1>
+        </div>
+      )}
+      <div ref={mountRef} className="relative w-full h-full" />
+    </>
+  );
+};
 
 export default ThreeCanvas;

@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import { MutableRefObject } from "react";
-import { speed } from "../globals/globales";
+import { maxWidth, speed } from "../globals/globales";
 
 /**
  * funcion para crear un coche
@@ -79,9 +79,6 @@ export function createTrack() {
  */
 export const handleKeyDown = (event: KeyboardEvent, car1Ref: MutableRefObject<THREE.Group<THREE.Object3DEventMap> | null>) => {
   if (car1Ref.current === null) return;
-
-  const aspect = window.innerWidth / window.innerHeight;
-  let maxWidth = aspect * 20 - 2;
   const car1 = car1Ref.current;
 
   switch (event.key) {
@@ -95,7 +92,7 @@ export const handleKeyDown = (event: KeyboardEvent, car1Ref: MutableRefObject<TH
     case 'd':
       if (car1.position.x < maxWidth) {
         car1.position.x += speed;
-      }
+      } 
       break;
   }
 }
